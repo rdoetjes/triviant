@@ -81,7 +81,7 @@
                 />
                     <p></p>
                     <!-- API Key Input -->
-                    <label>Language:</label>
+                    <label data-i18n="Language:">Language:</label>
                     <select id="languageSelect" onChange="updateLanguage()">
                         <option value="Dutch">Dutch</option>
                         <option value="English">English</option>
@@ -91,16 +91,16 @@
                     </select>
                 <p></p>
 
-                <h3>Add Players (Maximum 6)</h3>
+                <h3 data-i18n="Add Players (Maximum 6)">Add Players (Maximum 6)</h3>
                 <div id="playerInputs">
                     <div class="player-config">
-                        <input type="text" placeholder="Player 1 Name" class="player-name">
-                        <input type="number" placeholder="Age" min="1" max="120" class="player-age">
+                        <input type="text" data-placeholder="Player name" class="player-name">
+                        <input type="number" data-placeholder="Age" min="1" max="120" class="player-age">
                     </div>
                 </div>
                 
-                <button id="addPlayerBtn" onclick="addPlayerInput()">Add Player</button>
-                <button id="startGameBtn" onclick="startGame()">Start Game</button>
+                <button id="addPlayerBtn" onclick="addPlayerInput()" data-i18n="Add Player">Add Player</button>
+                <button id="startGameBtn" onclick="startGame()" data-i18n="Start Game">Start Game</button>
             </div>
             
             <!-- Game Screen (initially hidden) -->
@@ -109,30 +109,30 @@
                 
                 <!-- Player Selection -->
                 <div id="playerSelection">
-                    <h3>Select Player</h3>
+                    <h3 data-i18n="Select Player">Select Player</h3>
                     <div id="playerButtons"></div>
                 </div>
                 
                 <!-- Category Buttons -->
                 <div id="categoryButtons">
-                    <h3>Select Category</h3>
-                    <button class="category-button pink" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)">Pink</button>
-                    <button class="category-button blue" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)">Blue</button>
-                    <button class="category-button green" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)">Green</button>
-                    <button class="category-button yellow" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)">Yellow</button>
-                    <button class="category-button brown" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)">Brown</button>
-                    <button class="category-button orange" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)">Orange</button>
+                    <h3 d>Select Category</h3>
+                    <button class="category-button pink" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Pink">Pink</button>
+                    <button class="category-button blue" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Blue">Blue</button>
+                    <button class="category-button green" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Green">Green</button>
+                    <button class="category-button yellow" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Yellow">Yellow</button>
+                    <button class="category-button brown" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Brown">Brown</button>
+                    <button class="category-button orange" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Orange">Orange</button>
                 </div>
                 
                 <!-- Question and Answer Display -->
                 <div id="questionContainer">
-                    <h3>Question:</h3>
+                    <h3 data-i18n="Question">Question:</h3>
                     <div id="questionDisplay"></div>
                     
                     <div class="answer-container">
                         <h3>Answer:</h3>
                         <div id="answerDisplay" class="blurred"></div>
-                        <button id="showAnswerBtn" onclick="toggleAnswer()">Show Answer</button>
+                        <button id="showAnswerBtn" onclick="toggleAnswer()" data-i18n="Show Answer">Show Answer</button>
                     </div>
                 </div>
             </div>

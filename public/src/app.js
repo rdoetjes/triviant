@@ -1,5 +1,6 @@
 // Trivial Pursuit Game
 import OpenAI from "https://cdn.skypack.dev/openai";
+import {translations} from "./language.js";
 
 let client;
 let players = [];
@@ -31,6 +32,30 @@ window.createSystemPrompt = function () {
       `}
 };    
 
+window.updateUILanguage = function() {
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[language] && translations[language][key]) {
+            element.textContent = translations[language][key];
+        }
+    });
+    
+    // Update category buttons
+    document.querySelectorAll('[data-category]').forEach(button => {
+        const category = button.getAttribute('data-category');
+        button.textContent = translations[language][category] || category;
+    });
+    
+    // Update all inputs with data-placeholder attribute
+    document.querySelectorAll('[data-placeholder]').forEach(input => {
+    const key = input.getAttribute('data-placeholder');
+    if (translations[language] && translations[language][key]) {
+        input.placeholder = translations[language][key];
+        }
+    });
+}
+
 window.updateApiKey = function () {
     const input = document.getElementById("apiKeyInput");
     var apiKey = input.value;
@@ -47,6 +72,7 @@ window.updateLanguage = function() {
     const select = document.getElementById("languageSelect");
     language = select.value;
     console.log("Language changed to:", language);
+    updateUILanguage();
 };
 
 // Player management functions
@@ -62,8 +88,8 @@ window.addPlayerInput = function() {
     const playerDiv = document.createElement("div");
     playerDiv.className = "player-config";
     playerDiv.innerHTML = `
-        <input type="text" placeholder="Player ${playerCount} Name" class="player-name">
-        <input type="number" placeholder="Age" min="1" max="99" class="player-age">
+        <input type="text" placeholder="${translations[language]["Player name"]}" class="player-name">
+        <input type="number" placeholder="${translations[language]["Age"]}  " min="1" max="99" class="player-age">
     `;
     
     playerInputs.appendChild(playerDiv);
@@ -145,10 +171,10 @@ window.toggleAnswer = function() {
     
     if (answerVisible) {
         answerDisplay.classList.add("blurred");
-        showAnswerBtn.textContent = "Show Answer";
+        showAnswerBtn.textContent = translations[language]["Show Answer"];
     } else {
         answerDisplay.classList.remove("blurred");
-        showAnswerBtn.textContent = "Hide Answer";
+        showAnswerBtn.textContent = translations[language]["Hide Answer"];
     }
     
     answerVisible = !answerVisible;
@@ -165,12 +191,13 @@ window.getQuestion = async function(color, name, age) {
         const answerDisplay = document.getElementById("answerDisplay");
         
         // Show loading state
-        questionDisplay.textContent = "Loading question...";
+        questionDisplay.textContent = translations[language]["Loading question..."];
         answerDisplay.textContent = "";
         
         // Make sure answer is hidden when getting a new question
         answerDisplay.classList.add("blurred");
-        document.getElementById("showAnswerBtn").textContent = "Show Answer";
+        document.getElementById("showAnswerBtn").textContent = translations[language]["Show Answer"];
+        console.log("TAAAAAL "+translations[language]["Show Answer"] );
         answerVisible = false;
         
         messages.push(
@@ -213,4 +240,11 @@ window.getQuestion = async function(color, name, age) {
 // Initialize the game
 document.addEventListener("DOMContentLoaded", function() {
     // Any initialization code can go here
+      // Set default language
+      language = document.getElementById("languageSelect").value;
+    
+      // Initialize UI language
+      if (document.getElementById("gameScreen")) {
+          updateUILanguage();
+      }
 });
