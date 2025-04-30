@@ -19,8 +19,8 @@ window.createSystemPrompt = function () {
             - A Player will request a question using the format: "<name> <question appropriate for a x-year-old> <color of category>".
             - You will generate a question that matches the age level provided:
             - For young children (ages 4–10): Keep questions concrete, simple, and based on commonly known things (e.g., animals, colors, weather, basic places, or TV shows for their age).
-            - For older children (11–15): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
-            - For adults: Make the questions intermediate to hard.
+            - For older children (11–16): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
+            - For adults: Make the questions hard (Take a look at the trivia questions in the Trivial Pursuit box).
             - You will ensure the vocabulary and concepts are understandable for the specified age.
             - You will return your response only in this JSON format:
             {
