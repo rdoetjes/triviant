@@ -8,6 +8,7 @@ let language = "Dutch";
 let currentPlayerIndex = 0;
 let answerVisible = false;
 let messages = [];
+let answerDisplay = "";
 
 window.createSystemPrompt = function () {
     return {
@@ -165,19 +166,8 @@ window.getCurrentPlayer = function() {
     return players[currentPlayerIndex];
 };
 
-window.toggleAnswer = function() {
-    const answerDisplay = document.getElementById("answerDisplay");
-    const showAnswerBtn = document.getElementById("showAnswerBtn");
-    
-    if (answerVisible) {
-        answerDisplay.classList.add("blurred");
-        showAnswerBtn.textContent = translations[language]["Show Answer"];
-    } else {
-        answerDisplay.classList.remove("blurred");
-        showAnswerBtn.textContent = translations[language]["Hide Answer"];
-    }
-    
-    answerVisible = !answerVisible;
+window.showAnswer = function() {
+    questionDisplay.textContent = answerDisplay;
 };
 
 window.getQuestion = async function(color, name, age) {
@@ -188,17 +178,12 @@ window.getQuestion = async function(color, name, age) {
     
     try {
         const questionDisplay = document.getElementById("questionDisplay");
-        const answerDisplay = document.getElementById("answerDisplay");
         
         // Show loading state
         questionDisplay.textContent = translations[language]["Loading question..."];
-        answerDisplay.textContent = "";
         
         // Make sure answer is hidden when getting a new question
-        answerDisplay.classList.add("blurred");
         document.getElementById("showAnswerBtn").textContent = translations[language]["Show Answer"];
-        console.log("TAAAAAL "+translations[language]["Show Answer"] );
-        answerVisible = false;
         
         messages.push(
             {
@@ -225,7 +210,7 @@ window.getQuestion = async function(color, name, age) {
                     content: responseContent
                 }
             );
-            answerDisplay.textContent = jsonResponse.answer;
+            answerDisplay = jsonResponse.answer;
         } catch (parseError) {
             console.error("Error parsing JSON response:", parseError);
             questionDisplay.textContent = "Error: Could not parse question. Please try again.";

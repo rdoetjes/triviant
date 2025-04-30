@@ -215,13 +215,14 @@
         .question-section,
         .answer-section {
             flex: 1;
-            min-width: 300px;
+            min-width: 200px;
+            max-width: 400px;
         }
 
         #questionDisplay,
         #answerDisplay {
             height: 100%;
-            min-height: 150px;
+            min-height: 80px;
         }
 
         /* Responsive adjustment */
@@ -367,42 +368,42 @@
             </div>
 
             <!-- Category Buttons -->
-            <div id="categoryButtonsWrapper">
-                <h3 data-i18n="Select Category">Select Category</h3>
-                <svg viewBox="0 0 200 200" width="300" height="300" class="wedge-circle">
-                    <g class="wedge" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L100,0 A100,100 0 0,1 186.6,50 Z" class="pink" />
-                    </g>
-                    <g class="wedge" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L186.6,50 A100,100 0 0,1 186.6,150 Z" class="blue" />
-                    </g>
-                    <g class="wedge" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L186.6,150 A100,100 0 0,1 100,200 Z" class="green" />
-                    </g>
-                    <g class="wedge" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L100,200 A100,100 0 0,1 13.4,150 Z" class="yellow" />
-                    </g>
-                    <g class="wedge" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L13.4,150 A100,100 0 0,1 13.4,50 Z" class="brown" />
-                    </g>
-                    <g class="wedge" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)">
-                        <path d="M100,100 L13.4,50 A100,100 0 0,1 100,0 Z" class="orange" />
-                    </g>
-                </svg>
-            </div>
+        
 
             <!-- Question and Answer Display -->
             <div id="questionContainer">
+                <div id="categoryButtonsWrapper">
+                    <h3 data-i18n="Select Category">Select Category</h3>
+                    <svg viewBox="0 0 200 200" width="300" height="300" class="wedge-circle">
+                        <g class="wedge" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L100,0 A100,100 0 0,1 186.6,50 Z" class="pink" />
+                        </g>
+                        <g class="wedge" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L186.6,50 A100,100 0 0,1 186.6,150 Z" class="blue" />
+                        </g>
+                        <g class="wedge" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L186.6,150 A100,100 0 0,1 100,200 Z" class="green" />
+                        </g>
+                        <g class="wedge" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L100,200 A100,100 0 0,1 13.4,150 Z" class="yellow" />
+                        </g>
+                        <g class="wedge" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L13.4,150 A100,100 0 0,1 13.4,50 Z" class="brown" />
+                        </g>
+                        <g class="wedge" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)">
+                            <path d="M100,100 L13.4,50 A100,100 0 0,1 100,0 Z" class="orange" />
+                        </g>
+                    </svg>
+                </div>
                 <h3 data-i18n="Question">Question:</h3>
 
                 <div id="questionContainer">
                     <div class="question-section">
                         <div id="questionDisplay"></div>
                     </div>
-                    <div id="answerDisplay" class="blurred"></div>
-                    <button id="showAnswerBtn" onclick="toggleAnswer()" data-i18n="Show Answer">Show Answer</button>
                 </div>
             </div>
+            <button id="showAnswerBtn" onclick="showAnswer()" data-i18n="Show Answer">Show Answer</button>
         </div>
     </div>
     </div>
