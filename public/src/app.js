@@ -3,26 +3,31 @@ import OpenAI from "https://cdn.skypack.dev/openai";
 
 let client;
 let players = [];
+let language = "Dutch";
 let currentPlayerIndex = 0;
 let answerVisible = false;
+let messages = [];
 
 window.createSystemPrompt = function () {
     return {
         role: "system",
         content: `You are a Trivial Pursuit box.
-            - You will generate an open question (not a multiple-choice question) for one of the six Trivial Pursuit categories.
+            - Play this game in the ${language} language.
+            - You will generate an open-ended trivia question (not multiple choice) for one of the six Trivial Pursuit categories.
             - Blue is "Geography", Pink is "Entertainment", Yellow is "History", Green is "Science", Brown is "Art and Literature", and Orange is "Sports Trivia".
-            - You will wait for a Player to ask for a category. This Player's request is formatted as: "<name> <question appropriate for a 4-year-old> <color of category>".
-            - The questions should be a bit challenging intermediate to hard as Europeans are smarter than Americans.
-            - You will generate the question and answer into this JSON format and only return this format:
-                {  
-                "question": "What is the capital of France?",  
-                "name": "John",  
-                "Question appropriate for age": "50",  
-                "category": "Geography",  
-                "answer": "Paris"  
-                }  
-            - Make sure the variations of the questions are extremely widely different.
+            - A Player will request a question using the format: "<name> <question appropriate for a x-year-old> <color of category>".
+            - You will generate a question that matches the age level provided:
+            - For young children (ages 4–10): Keep questions concrete, simple, and based on commonly known things (e.g., animals, colors, weather, basic places, or TV shows for their age).
+            - For older children (11–15): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
+            - For adults: Make the questions intermediate to hard.
+            - You will ensure the vocabulary and concepts are understandable for the specified age.
+            - You will return your response only in this JSON format:
+            {
+            "question": "What is the capital of France?",
+            "answer": "Paris"
+            }
+            - Make sure the questions vary widely in style and content across categories.
+            - Avoid the same question twice!!!
       `}
 };    
 
@@ -35,6 +40,13 @@ window.updateApiKey = function () {
         dangerouslyAllowBrowser: true,
     });
     console.log("Client initialized:", client);
+};
+
+//set language
+window.updateLanguage = function() {
+    const select = document.getElementById("languageSelect");
+    language = select.value;
+    console.log("Language changed to:", language);
 };
 
 // Player management functions
@@ -51,7 +63,7 @@ window.addPlayerInput = function() {
     playerDiv.className = "player-config";
     playerDiv.innerHTML = `
         <input type="text" placeholder="Player ${playerCount} Name" class="player-name">
-        <input type="number" placeholder="Age" min="1" max="120" class="player-age">
+        <input type="number" placeholder="Age" min="1" max="99" class="player-age">
     `;
     
     playerInputs.appendChild(playerDiv);
@@ -83,6 +95,10 @@ window.startGame = function() {
     document.getElementById("playerConfigScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "block";
     
+    // instruct AI
+    messages = [createSystemPrompt()];
+    console.log("Messages:", messages);
+
     // Create player buttons
     createPlayerButtons();
     
@@ -157,18 +173,17 @@ window.getQuestion = async function(color, name, age) {
         document.getElementById("showAnswerBtn").textContent = "Show Answer";
         answerVisible = false;
         
-        const messages = [
-            createSystemPrompt(),
+        messages.push(
             {
                 role: "user",
-                content: `${name} question appropriate for age ${age} ${color}`
+                content: `${name} ${age} ${color}`
             }
-        ];
+        );
         
         const response = await client.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4.5-preview",
             messages: messages,
-            temperature: 0.7,
+            temperature: 1.3,
         });
         
         const responseContent = response.choices[0].message.content;
@@ -177,6 +192,12 @@ window.getQuestion = async function(color, name, age) {
         try {
             const jsonResponse = JSON.parse(responseContent);
             questionDisplay.textContent = jsonResponse.question;
+            messages.push(
+                {
+                    role: "assistant",
+                    content: responseContent
+                }
+            );
             answerDisplay.textContent = jsonResponse.answer;
         } catch (parseError) {
             console.error("Error parsing JSON response:", parseError);

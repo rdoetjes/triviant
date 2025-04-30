@@ -79,7 +79,18 @@
                     placeholder="Enter API key"
                     oninput="updateApiKey()"
                 />
-                
+                    <p></p>
+                    <!-- API Key Input -->
+                    <label>Language:</label>
+                    <select id="languageSelect" onChange="updateLanguage()">
+                        <option value="Dutch">Dutch</option>
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                <p></p>
+
                 <h3>Add Players (Maximum 6)</h3>
                 <div id="playerInputs">
                     <div class="player-config">
