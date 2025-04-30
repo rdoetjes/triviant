@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <title>Trivial Pursuit</title>
+        <link rel="stylesheet" href="./css/horror-style.css" id="theme-stylesheet">
+        <style>
+            /* Trivial Pursuit specific styles */
+            .player-config {
+                margin-bottom: 10px;
+            }
+            .category-button {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin: 10px;
+                font-weight: bold;
+                cursor: pointer;
+                border: 3px solid #333;
+            }
+            .pink { background-color: #FF69B4; }
+            .blue { background-color: #1E90FF; }
+            .green { background-color: #32CD32; }
+            .yellow { background-color: #FFD700; }
+            .brown { background-color: #A0522D; }
+            .orange { background-color: #FFA500; }
+            
+            .player-button {
+                padding: 10px 15px;
+                margin: 5px;
+                cursor: pointer;
+            }
+            
+            .active-player {
+                border: 3px solid red;
+            }
+            
+            .answer-container {
+                margin-top: 20px;
+            }
+            
+            .blurred {
+                filter: blur(5px);
+                -webkit-filter: blur(5px);
+            }
+            
+            #questionDisplay {
+                min-height: 100px;
+                padding: 15px;
+                background-color: #f0f0f0;
+                border-radius: 5px;
+                margin-bottom: 15px;
+            }
+            
+            #answerDisplay {
+                min-height: 50px;
+                padding: 15px;
+                background-color: #e0e0e0;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="crt">
+            <!-- Player Configuration Screen -->
+            <div id="playerConfigScreen">
+                <h2>TRIVIAL PURSUIT - PLAYER SETUP</h2>
+                
+                <!-- API Key Input -->
+                <label>OPENAI API KEY:</label>
+                <input
+                    type="text"
+                    id="apiKeyInput"
+                    placeholder="Enter API key"
+                    oninput="updateApiKey()"
+                />
+                
+                <h3>Add Players (Maximum 6)</h3>
+                <div id="playerInputs">
+                    <div class="player-config">
+                        <input type="text" placeholder="Player 1 Name" class="player-name">
+                        <input type="number" placeholder="Age" min="1" max="120" class="player-age">
+                    </div>
+                </div>
+                
+                <button id="addPlayerBtn" onclick="addPlayerInput()">Add Player</button>
+                <button id="startGameBtn" onclick="startGame()">Start Game</button>
+            </div>
+            
+            <!-- Game Screen (initially hidden) -->
+            <div id="gameScreen" style="display: none;">
+                <h2>TRIVIAL PURSUIT</h2>
+                
+                <!-- Player Selection -->
+                <div id="playerSelection">
+                    <h3>Select Player</h3>
+                    <div id="playerButtons"></div>
+                </div>
+                
+                <!-- Category Buttons -->
+                <div id="categoryButtons">
+                    <h3>Select Category</h3>
+                    <button class="category-button pink" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)">Pink</button>
+                    <button class="category-button blue" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)">Blue</button>
+                    <button class="category-button green" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)">Green</button>
+                    <button class="category-button yellow" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)">Yellow</button>
+                    <button class="category-button brown" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)">Brown</button>
+                    <button class="category-button orange" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)">Orange</button>
+                </div>
+                
+                <!-- Question and Answer Display -->
+                <div id="questionContainer">
+                    <h3>Question:</h3>
+                    <div id="questionDisplay"></div>
+                    
+                    <div class="answer-container">
+                        <h3>Answer:</h3>
+                        <div id="answerDisplay" class="blurred"></div>
+                        <button id="showAnswerBtn" onclick="toggleAnswer()">Show Answer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.skypack.dev/openai" type="module"></script>
+        <script src="./src/app.js" type="module"></script>
+    </body>
+</html>
