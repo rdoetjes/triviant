@@ -1,365 +1,414 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-        <title>Trivial Pursuit</title>
-        <link rel="stylesheet" href="./css/horror-style.css" id="theme-stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-        <style>
-            /* Global Styles */
-            body {
-                font-family: 'Montserrat', sans-serif;
-                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                color: #fff;
-                margin: 0;
-                padding: 0;
-            }
-            
-            #crt {
-                max-width: 1000px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: rgba(0, 0, 0, 0.7);
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            }
-            
-            h2 {
-                text-align: center;
-                color: #FFD700;
-                font-size: 2.5rem;
-                margin-bottom: 30px;
-                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            }
-            
-            h3 {
-                color: #1E90FF;
-                margin-top: 25px;
-                font-size: 1.5rem;
-            }
-            
-            /* Player Configuration Screen */
-            #playerConfigScreen {
-                padding: 20px;
-                background-color: rgba(30, 30, 60, 0.6);
-                border-radius: 10px;
-                margin-bottom: 20px;
-            }
-            
-            input[type="text"], input[type="number"], select {
-                background-color: rgba(255, 255, 255, 0.1);
-                border: 2px solid #1E90FF;
-                border-radius: 5px;
-                padding: 12px 15px;
-                color: white;
-                margin: 8px 0;
-                width: 100%;
-                font-size: 16px;
-                transition: all 0.3s ease;
-            }
-            
-            input[type="text"]:focus, input[type="number"]:focus, select:focus {
-                background-color: rgba(255, 255, 255, 0.2);
-                border-color: #FFD700;
-                outline: none;
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            }
-            
-            select {
-                appearance: none;
-                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-                background-repeat: no-repeat;
-                background-position: right 10px center;
-                background-size: 20px;
-            }
-            
-            label {
-                display: block;
-                margin-top: 15px;
-                color: #FFD700;
-                font-weight: 600;
-            }
-            
-            button {
-                background: linear-gradient(135deg, #1E90FF 0%, #4169E1 100%);
-                color: white;
-                border: none;
-                padding: 12px 20px;
-                margin: 10px 5px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: 600;
-                font-size: 16px;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            button:hover {
-                background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            }
-            
-            /* Player Configuration */
-            .player-config {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 15px;
-            }
-            
-            /* Game Screen */
-            #gameScreen {
-                padding: 20px;
-                background-color: rgba(30, 30, 60, 0.6);
-                border-radius: 10px;
-            }
-            
-            /* Category Buttons */
-            #categoryButtons {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin: 20px 0;
-            }
-            
-            .category-button {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                margin: 15px;
-                font-weight: bold;
-                cursor: pointer;
-                border: none;
-                font-size: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.3s ease;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            }
-            
-            .category-button:hover {
-                transform: scale(1.1) rotate(5deg);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            }
-            
-            .pink { 
-                background: radial-gradient(circle, #FF69B4 0%, #FF1493 100%);
-                color: white;
-            }
-            
-            .blue { 
-                background: radial-gradient(circle, #1E90FF 0%, #0000CD 100%);
-                color: white;
-            }
-            
-            .green { 
-                background: radial-gradient(circle, #32CD32 0%, #006400 100%);
-                color: white;
-            }
-            
-            .yellow { 
-                background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
-                color: black;
-            }
-            
-            .brown { 
-                background: radial-gradient(circle, #A0522D 0%, #8B4513 100%);
-                color: white;
-            }
-            
-            .orange { 
-                background: radial-gradient(circle, #FFA500 0%, #FF4500 100%);
-                color: white;
-            }
-            
-            /* Player Selection */
-            #playerButtons {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-                margin: 20px 0;
-            }
-            
-            .player-button {
-                padding: 12px 20px;
-                margin: 5px;
-                cursor: pointer;
-                background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-                border-radius: 30px;
-                transition: all 0.3s ease;
-            }
-            
-            .active-player {
-                border: none;
-                background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-                transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
-            }
-            
-            /* Question and Answer Display */
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Trivial Pursuit</title>
+    <link rel="stylesheet" href="./css/horror-style.css" id="theme-stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        #crt {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            text-align: center;
+            color: #FFD700;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        h3 {
+            color: #1E90FF;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        /* Player Configuration Screen */
+        #playerConfigScreen {
+            padding: 20px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #1E90FF;
+            border-radius: 5px;
+            padding: 12px 15px;
+            color: white;
+            margin: 8px 0;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        button {
+            background: linear-gradient(135deg, #1E90FF 0%, #4169E1 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Player Configuration */
+        .player-config {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Game Screen */
+        #gameScreen {
+            padding: 20px;
+            background-color: rgba(30, 30, 60, 0.6);
+            border-radius: 10px;
+        }
+
+        #wedge-circle {
+            margin: 0 auto;
+        }
+
+        .wedge path {
+            cursor: pointer;
+            stroke: #000;
+            stroke-width: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .wedge-label {
+            font-size: 10px;
+            fill: white;
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Disable animations and hover transform */
+        .wedge:hover path {
+            transform: none;
+        }
+
+        svg text {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Use your existing gradients/colors */
+        .pink {
+            fill: url(#pinkGrad);
+        }
+
+        .blue {
+            fill: url(#blueGrad);
+        }
+
+        .green {
+            fill: url(#greenGrad);
+        }
+
+        .yellow {
+            fill: url(#yellowGrad);
+            fill-opacity: 0.9;
+        }
+
+        .brown {
+            fill: url(#brownGrad);
+        }
+
+        .orange {
+            fill: url(#orangeGrad);
+        }
+
+        /* Player Selection */
+        #playerButtons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .player-button {
+            padding: 12px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .active-player {
+            border: none;
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+        }
+
+        #questionContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 5px;
+            border-radius: 10px;
+            margin-top: 5px;
+        }
+
+        .question-section,
+        .answer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        #questionDisplay,
+        #answerDisplay {
+            height: 100%;
+            min-height: 150px;
+        }
+
+        /* Responsive adjustment */
+        @media (max-width: 768px) {
             #questionContainer {
-                background-color: rgba(0, 0, 0, 0.3);
-                padding: 20px;
-                border-radius: 10px;
-                margin-top: 30px;
+                flex-direction: column;
             }
-            
-            #questionDisplay {
-                min-height: 100px;
-                padding: 20px;
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-                margin-bottom: 20px;
-                font-size: 18px;
-                line-height: 1.6;
-                color: #fff;
-                border-left: 5px solid #1E90FF;
+        }
+
+        .answer-container {
+            margin-top: 25px;
+        }
+
+        #answerDisplay {
+            min-height: 50px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #fff;
+            border-left: 5px solid #FFD700;
+        }
+
+        .blurred {
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+            transition: all 0.5s ease;
+        }
+
+        #showAnswerBtn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: black;
+            margin-top: 15px;
+        }
+
+        #showAnswerBtn:hover {
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+        }
+
+        #startGameBtn {
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+
+        #addPlayerBtn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .category-button {
+                width: 80px;
+                height: 80px;
+                margin: 8px;
+                font-size: 14px;
             }
-            
-            .answer-container {
-                margin-top: 25px;
+
+            h2 {
+                font-size: 2rem;
             }
-            
+
+            #questionDisplay,
             #answerDisplay {
-                min-height: 50px;
-                padding: 20px;
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-                font-size: 18px;
-                line-height: 1.6;
-                color: #fff;
-                border-left: 5px solid #FFD700;
+                font-size: 16px;
             }
-            
-            .blurred {
-                filter: blur(8px);
-                -webkit-filter: blur(8px);
-                transition: all 0.5s ease;
-            }
-            
-            #showAnswerBtn {
-                background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-                color: black;
-                margin-top: 15px;
-            }
-            
-            #showAnswerBtn:hover {
-                background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
-            }
-            
-            #startGameBtn {
-                background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-                margin-top: 20px;
-                padding: 15px 30px;
-                font-size: 18px;
-            }
-            
-            #addPlayerBtn {
-                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-                color: white;
-            }
-            
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .category-button {
-                    width: 80px;
-                    height: 80px;
-                    margin: 8px;
-                    font-size: 14px;
-                }
-                
-                h2 {
-                    font-size: 2rem;
-                }
-                
-                #questionDisplay, #answerDisplay {
-                    font-size: 16px;
-                }
-            }
-        </style>
-    </head>
+        }
+    </style>
+</head>
 
-    <body>
-        <div id="crt">
-            <!-- Player Configuration Screen -->
-            <div id="playerConfigScreen">
-                <h2>TRIVIAL PURSUIT</h2>
-                
-                <!-- API Key Input -->
-                <label>OPENAI API KEY:</label>
-                <input
-                    type="text"
-                    id="apiKeyInput"
-                    placeholder="Enter API key"
-                    oninput="updateApiKey()"
-                />
-                <p></p>
-                <!-- Language Selection -->
-                <label data-i18n="Language:">Language:</label>
-                <select id="languageSelect" onChange="updateLanguage()">
-                    <option value="Dutch">Dutch</option>
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                </select>
-                <p></p>
+<body>
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FF69B4" />
+                <stop offset="100%" stop-color="#FF1493" />
+            </linearGradient>
+            <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1E90FF" />
+                <stop offset="100%" stop-color="#0000CD" />
+            </linearGradient>
+            <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#32CD32" />
+                <stop offset="100%" stop-color="#006400" />
+            </linearGradient>
+            <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFD700" />
+                <stop offset="100%" stop-color="#FFA500" />
+            </linearGradient>
+            <linearGradient id="brownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#A0522D" />
+                <stop offset="100%" stop-color="#8B4513" />
+            </linearGradient>
+            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFA500" />
+                <stop offset="100%" stop-color="#FF4500" />
+            </linearGradient>
+        </defs>
+    </svg>  
+    <div id="crt">
+        <!-- Player Configuration Screen -->
+        <div id="playerConfigScreen">
+            <h2>TRIVIAL PURSUIT</h2>
 
-                <h3 data-i18n="Add Players (Maximum 6)">Add Players (Maximum 6)</h3>
-                <div id="playerInputs">
-                    <div class="player-config">
-                        <input type="text" placeholder="Player name" data-placeholder="Player name" class="player-name">
-                        <input type="number" placeholder="Age" data-placeholder="Age" min="1" max="120" class="player-age">
-                    </div>
+            <!-- API Key Input -->
+            <label>OPENAI API KEY:</label>
+            <input type="text" id="apiKeyInput" placeholder="Enter API key" oninput="updateApiKey()" />
+            <p></p>
+            <!-- Language Selection -->
+            <label data-i18n="Language:">Language:</label>
+            <select id="languageSelect" onChange="updateLanguage()">
+                <option value="Dutch">Dutch</option>
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+                <option value="French">French</option>
+                <option value="German">German</option>
+            </select>
+            <p></p>
+
+            <h3 data-i18n="Add Players (Maximum 6)">Add Players (Maximum 6)</h3>
+            <div id="playerInputs">
+                <div class="player-config">
+                    <input type="text" placeholder="Player name" data-placeholder="Player name" class="player-name">
+                    <input type="number" placeholder="Age" data-placeholder="Age" min="1" max="120" class="player-age">
                 </div>
-                
-                <button id="addPlayerBtn" onclick="addPlayerInput()" data-i18n="Add Player">Add Player</button>
-                <button id="startGameBtn" onclick="startGame()" data-i18n="Start Game">Start Game</button>
             </div>
-            
-            <!-- Game Screen (initially hidden) -->
-            <div id="gameScreen" style="display: none;">
-                <h2>TRIVIAL PURSUIT</h2>
-                
-                <!-- Player Selection -->
-                <div id="playerSelection">
-                    <h3 data-i18n="Select Player">Select Player</h3>
-                    <div id="playerButtons"></div>
-                </div>
-                
-                <!-- Category Buttons -->
-                <div id="categoryButtons">
-                    <h3 data-i18n="Select Category">Select Category</h3>
-                    <button class="category-button pink" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Pink">Pink</button>
-                    <button class="category-button blue" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Blue">Blue</button>
-                    <button class="category-button green" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Green">Green</button>
-                    <button class="category-button yellow" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Yellow">Yellow</button>
-                    <button class="category-button brown" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Brown">Brown</button>
-                    <button class="category-button orange" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)" data-category="Orange">Orange</button>
-                </div>
-                
-                <!-- Question and Answer Display -->
+
+            <button id="addPlayerBtn" onclick="addPlayerInput()" data-i18n="Add Player">Add Player</button>
+            <button id="startGameBtn" onclick="startGame()" data-i18n="Start Game">Start Game</button>
+        </div>
+
+        <!-- Game Screen (initially hidden) -->
+        <div id="gameScreen" style="display: none;">
+            <h2>TRIVIAL PURSUIT</h2>
+
+            <!-- Player Selection -->
+            <div id="playerSelection">
+                <h3 data-i18n="Select Player">Select Player</h3>
+                <div id="playerButtons"></div>
+            </div>
+
+            <!-- Category Buttons -->
+            <div id="categoryButtonsWrapper">
+                <h3 data-i18n="Select Category">Select Category</h3>
+                <svg viewBox="0 0 200 200" width="300" height="300" class="wedge-circle">
+                    <g class="wedge" onclick="getQuestion('Pink', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L100,0 A100,100 0 0,1 186.6,50 Z" class="pink" />
+                    </g>
+                    <g class="wedge" onclick="getQuestion('Blue', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L186.6,50 A100,100 0 0,1 186.6,150 Z" class="blue" />
+                    </g>
+                    <g class="wedge" onclick="getQuestion('Green', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L186.6,150 A100,100 0 0,1 100,200 Z" class="green" />
+                    </g>
+                    <g class="wedge" onclick="getQuestion('Yellow', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L100,200 A100,100 0 0,1 13.4,150 Z" class="yellow" />
+                    </g>
+                    <g class="wedge" onclick="getQuestion('Brown', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L13.4,150 A100,100 0 0,1 13.4,50 Z" class="brown" />
+                    </g>
+                    <g class="wedge" onclick="getQuestion('Orange', getCurrentPlayer().name, getCurrentPlayer().age)">
+                        <path d="M100,100 L13.4,50 A100,100 0 0,1 100,0 Z" class="orange" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Question and Answer Display -->
+            <div id="questionContainer">
+                <h3 data-i18n="Question">Question:</h3>
+
                 <div id="questionContainer">
-                    <h3 data-i18n="Question">Question:</h3>
-                    <div id="questionDisplay"></div>
-                    
-                    <div class="answer-container">
-                        <h3>Answer:</h3>
-                        <div id="answerDisplay" class="blurred"></div>
-                        <button id="showAnswerBtn" onclick="toggleAnswer()" data-i18n="Show Answer">Show Answer</button>
+                    <div class="question-section">
+                        <div id="questionDisplay"></div>
                     </div>
+                    <div id="answerDisplay" class="blurred"></div>
+                    <button id="showAnswerBtn" onclick="toggleAnswer()" data-i18n="Show Answer">Show Answer</button>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
 
-        <script src="https://cdn.skypack.dev/openai" type="module"></script>
-        <script src="./src/app.js" type="module"></script>
-    </body>
+    <script src="https://cdn.skypack.dev/openai" type="module"></script>
+    <script src="./src/app.js" type="module"></script>
+</body>
+
 </html>
