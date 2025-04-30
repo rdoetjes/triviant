@@ -1,6 +1,11 @@
+        @font-face {
+            font-family: 'GreatVibes-Regular';
+            src: url("/assets/GreatVibes-Regular.ttf") format("truetype");
+        }
+
         /* Global Styles */
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #fff;
             margin: 0;
@@ -17,9 +22,10 @@
         }
 
         h2 {
+            font-family: 'GreatVibes-Regular';
             text-align: center;
             color: #FFD700;
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
@@ -135,7 +141,7 @@
         }
 
         svg text {
-            font-family: 'Montserrat', sans-serif;
+            font-family: sans-serif;
         }
 
         /* Use your existing gradients/colors */
@@ -208,7 +214,7 @@
         #questionDisplay{
             height: 50%;
             min-height: 80px;
-            background-color: #242a31;
+            background-color: #011b38;
             border-radius: 10px;
             padding: 10px;
         }
