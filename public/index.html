@@ -212,17 +212,18 @@
             margin-top: 5px;
         }
 
-        .question-section,
-        .answer-section {
+        .question-section{
             flex: 1;
             min-width: 200px;
-            max-width: 400px;
+            width: 100%;
         }
 
-        #questionDisplay,
-        #answerDisplay {
-            height: 100%;
+        #questionDisplay{
+            height: 50%;
             min-height: 80px;
+            background-color: #242a31;
+            border-radius: 10px;
+            padding: 10px;
         }
 
         /* Responsive adjustment */
@@ -288,9 +289,8 @@
                 font-size: 2rem;
             }
 
-            #questionDisplay,
-            #answerDisplay {
-                font-size: 16px;
+            #questionDisplay {
+                font-size: 15px;
             }
         }
     </style>
@@ -396,11 +396,8 @@
                     </svg>
                 </div>
                 <h3 data-i18n="Question">Question:</h3>
-
-                <div id="questionContainer">
-                    <div class="question-section">
-                        <div id="questionDisplay"></div>
-                    </div>
+                <div class="question-section">
+                    <div id="questionDisplay"></div>
                 </div>
             </div>
             <button id="showAnswerBtn" onclick="showAnswer()" data-i18n="Show Answer">Show Answer</button>
