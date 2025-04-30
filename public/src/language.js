@@ -30,6 +30,7 @@ export const translations = {
         "Add Players (Maximum 6)": "Add Players (Maximum 6)",
         "Age": "Age",
         "Player name": "Player name",
+        "Select Category": "Color",
     },
     Dutch: {   
         "Player 1": "Speler 1",
@@ -62,7 +63,7 @@ export const translations = {
         "Add Players (Maximum 6)": "Voeg spelers toe (Maximaal 6)",
         "Age": "Leeftijd",
         "Player name": "Naam speler",
-       
+        "Select Category": "Kleur",
     },
     German: {
         "Player 1": "Spieler 1",
@@ -95,6 +96,7 @@ export const translations = {
         "Add Players (Maximum 6)": "Spieler hinzufügen (Maximale Anzahl: 6)",
         "Age": "Alter",
         "Player name": "Spielername",
+        "Select Category": "Farbe",
     },
     Spanish: {
         "Player 1": "Jugador 1",
@@ -127,6 +129,7 @@ export const translations = {
         "Add Players (Maximum 6)": "Agregar jugadores (Máximo 6)",
         "Age": "Edad",
         "Player name": "Nombre de jugador",
+        "Select Category": "Color",
     },
     French: {
         "Player 1": "Joueur 1",
@@ -159,6 +162,7 @@ export const translations = {
         "Add Players (Maximum 6)": "Ajouter des joueurs (Maximum 6)",
         "Age": "Âge",
         "Player name": "Nom du joueur",
+        "Select Category": "Couleur",
     }
 };
     
