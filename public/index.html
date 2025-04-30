@@ -297,34 +297,50 @@
 </head>
 
 <body>
-    <svg width="0" height="0" style="position: absolute;">
+    <svg width="0" height="0" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FF69B4" />
-                <stop offset="100%" stop-color="#FF1493" />
-            </linearGradient>
-            <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1E90FF" />
-                <stop offset="100%" stop-color="#0000CD" />
-            </linearGradient>
-            <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#32CD32" />
-                <stop offset="100%" stop-color="#006400" />
-            </linearGradient>
-            <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFD700" />
-                <stop offset="100%" stop-color="#FFA500" />
-            </linearGradient>
-            <linearGradient id="brownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#A0522D" />
-                <stop offset="100%" stop-color="#8B4513" />
-            </linearGradient>
-            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFA500" />
-                <stop offset="100%" stop-color="#FF4500" />
-            </linearGradient>
+          <radialGradient id="pinkGrad" cx="70%" cy="33%" r="80%">
+            <stop offset="0%" stop-color="#FFB6C1" />
+            <stop offset="60%" stop-color="#FF69B4" />
+            <stop offset="100%" stop-color="#FF1493" />
+          </radialGradient>
+          <radialGradient id="blueGrad" cx="80%" cy="50%" r="80%">
+            <stop offset="0%" stop-color="#87CEFA" />
+            <stop offset="60%" stop-color="#1E90FF" />
+            <stop offset="100%" stop-color="#0000CD" />
+          </radialGradient>
+          <radialGradient id="greenGrad" cx="45%" cy="65%" r="80%">
+            <stop offset="0%" stop-color="#90EE90" />
+            <stop offset="60%" stop-color="#32CD32" />
+            <stop offset="100%" stop-color="#006400" />
+          </radialGradient>
+          <radialGradient id="yellowGrad" cx="50%" cy="70%" r="80%">
+            <stop offset="0%" stop-color="#FFFACD" />
+            <stop offset="60%" stop-color="#FFD700" />
+            <stop offset="100%" stop-color="#FFA500" />
+          </radialGradient>
+          <radialGradient id="brownGrad" cx="25%" cy="50%" r="80%">
+            <stop offset="0%" stop-color="#D2B48C" />
+            <stop offset="60%" stop-color="#A0522D" />
+            <stop offset="100%" stop-color="#8B4513" />
+          </radialGradient>
+          <radialGradient id="orangeGrad" cx="50%" cy="35%" r="80%">
+            <stop offset="0%" stop-color="#FFDAB9" />
+            <stop offset="60%" stop-color="#FFA500" />
+            <stop offset="100%" stop-color="#FF4500" />
+          </radialGradient>
         </defs>
-    </svg>  
+      
+        <!-- Smarty candy-style circles -->
+        <circle cx="50" cy="100" r="40" fill="url(#pinkGrad)" />
+        <circle cx="120" cy="100" r="40" fill="url(#blueGrad)" />
+        <circle cx="190" cy="100" r="40" fill="url(#greenGrad)" />
+        <circle cx="260" cy="100" r="40" fill="url(#yellowGrad)" />
+        <circle cx="330" cy="100" r="40" fill="url(#brownGrad)" />
+        <circle cx="400" cy="100" r="40" fill="url(#orangeGrad)" />
+      </svg>
+      
+      
     <div id="crt">
         <!-- Player Configuration Screen -->
         <div id="playerConfigScreen">
