@@ -217,9 +217,10 @@ window.getQuestion = async function(color, name, age) {
         );
         
         const response = await client.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4-turbo",
             messages: messages,
             temperature: 0.65,
+            max_tokens: 150,
         });
 
         const responseContent = response.choices[0].message.content;
