@@ -198,7 +198,9 @@ window.getQuestion = async function(color, name, age) {
             temperature: 0.65,
         });
         
-        console.log(messages.pop());
+        // remove the last user message, we don't need player moves to be part of the costly prompts
+        messages.pop();
+
         const responseContent = response.choices[0].message.content;
         console.log("API Response:", responseContent);
         
