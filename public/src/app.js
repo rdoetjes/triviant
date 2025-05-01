@@ -188,7 +188,7 @@ window.getQuestion = async function(color, name, age) {
         messages.push(
             {
                 role: "user",
-                content: `${name} ${age} ${color}`
+                content: `${name} a question for a ${age} old ${color}`
             }
         );
         
