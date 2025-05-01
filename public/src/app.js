@@ -198,6 +198,7 @@ window.getQuestion = async function(color, name, age) {
             temperature: 0.65,
         });
         
+        console.log(messages.pop());
         const responseContent = response.choices[0].message.content;
         console.log("API Response:", responseContent);
         
