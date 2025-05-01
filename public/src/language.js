@@ -32,6 +32,9 @@ export const translations = {
         "Player name": "Player name",
         "Select Category": "Color",
         "Country:": "Country:",
+        "Please enter your OpenAI API key first!": "Please enter your OpenAI API key first!",
+        "Please add at least one player.": "Please add at least one player.",
+        "Maximum 6 players allowed!": "Maximum 6 players allowed!",
     },
     Dutch: {   
         "Player 1": "Speler 1",
@@ -66,6 +69,9 @@ export const translations = {
         "Player name": "Naam speler",
         "Select Category": "Kleur",
         "Country:": "Land:",
+        "Please enter your OpenAI API key first!": "Voer eerst uw OpenAI API-sleutel in!",
+        "Please add at least one player.": "Voeg tenminste één speler toe!",
+        "Maximum 6 players allowed!": "Maximaal 6 spelers toegestaan!",
     },
     German: {
         "Player 1": "Spieler 1",
@@ -100,6 +106,9 @@ export const translations = {
         "Player name": "Spielername",
         "Select Category": "Farbe",
         "Country:": "Land:",
+        "Please enter your OpenAI API key first!": "Bitte geben Sie zuerst Ihren OpenAI API-Schlüssel ein!",
+        "Please add at least one player!": "Bitte fügen Sie mindestens einen Spieler hinzu!",
+        "Maximum 6 players allowed!": "Maximal 6 Spieler sind erlaubt!",
     },
     Spanish: {
         "Player 1": "Jugador 1",
@@ -134,6 +143,9 @@ export const translations = {
         "Player name": "Nombre de jugador",
         "Select Category": "Color",
         "Country:": "País:",
+        "Please enter your OpenAI API key first!": "¡Por favor, ingrese su clave de API de OpenAI primero!",
+        "Please add at least one player.": "¡Por favor, agregue al menos un jugador!",
+        "Maximum 6 players allowed!": "¡Máximo 6 jugadores permitidos!",
     },
     French: {
         "Player 1": "Joueur 1",
@@ -168,6 +180,9 @@ export const translations = {
         "Player name": "Nom du joueur",
         "Select Category": "Couleur",
         "Country:": "Pays:",
+        "Please enter your OpenAI API key first!": "Veuillez entrer votre clé API OpenAI d'abord !",
+        "Please add at least one player.": "Veuillez ajouter au moins un joueur !",
+        "Maximum 6 players allowed!": "Maximum 6 joueurs autorisés !",
     }
 };
     

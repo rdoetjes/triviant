@@ -7,7 +7,6 @@ let players = [];
 let language = "Dutch";
 let country = "Netherlands";
 let currentPlayerIndex = 0;
-let answerVisible = false;
 let messages = [];
 let answerDisplay = "";
 
@@ -86,7 +85,7 @@ window.updateCountry = function() {
 // Player management functions
 window.addPlayerInput = function() {
     if (document.querySelectorAll('.player-config').length >= 6) {
-        alert("Maximum 6 players allowed!");
+        alert(translations[language]["Maximum 6 players allowed!"]);
         return;
     }
     
@@ -121,7 +120,7 @@ window.startGame = function() {
     });
     
     if (players.length === 0) {
-        alert("Please add at least one player!");
+        alert(translations[language]["Please add at least one player."]);
         return;
     }
     
@@ -179,7 +178,7 @@ window.showAnswer = function() {
 
 window.getQuestion = async function(color, name, age) {
     if (!client) {
-        alert("Please enter your OpenAI API key first!");
+        alert(translations[language]["Please enter your OpenAI API key first!"]);
         return;
     }
     
