@@ -5,6 +5,7 @@ import {translations} from "./language.js";
 let client;
 let players = [];
 let language = "Dutch";
+let country = "Netherlands";
 let currentPlayerIndex = 0;
 let answerVisible = false;
 let messages = [];
@@ -14,23 +15,22 @@ window.createSystemPrompt = function () {
     return {
         role: "system",
         content: `You are a Trivial Pursuit box.
-            - Play this game in the ${language} language.
-            - You will generate an open-ended trivia question (not multiple choice) for one of the six Trivial Pursuit categories.
-            - Blue is "Geography", Pink is "Entertainment", Yellow is "History", Green is "Science", Brown is "Art and Literature", and Orange is "Sports Trivia".
-            - A Player will request a question using the format: "<name> <question appropriate for a x-year-old> <color of category>".
-            - You will generate a question that matches the age level provided:
-            - For young children (ages 4–10): Keep questions concrete, simple, and based on commonly known things (e.g., animals, colors, weather, basic places, or TV shows for their age).
-            - For older children (11–16): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
-            - For adults: Make the questions hard (Take a look at the trivia questions in the Trivial Pursuit box).
-            - You will ensure the vocabulary and concepts are understandable for the specified age.
-            - You will return your response only in this JSON format:
-            {
-            "question": "What is the capital of France?",
-            "answer": "Paris"
-            }
-            - Make sure the questions vary widely in style and content across categories.
-            - Avoid the same question twice!!!
-      `}
+        - Play this game in the ${language} language.
+        - You will generate an open-ended trivia question (not multiple choice) for one of the six Trivial Pursuit categories.
+        - Blue is "Geography", Pink is "Entertainment", Yellow is "History", Green is "Science", Brown is "Art and Literature", and Orange is "Sports Trivia".
+        - A Player will request a question using the format: "<name> <question appropriate for a x-year-old> <color of category>".
+        - You will generate a question that matches the age level provided:
+          - For young children (ages 4–10): Keep questions very concrete and simple, and ensure they are grounded **exclusively in the daily life, culture, and language** of children living in ${country}. Do not reference things that are specific to other countries (e.g., yellow school buses in the U.S.). Focus on topics familiar to children in ${country}: local animals, foods, holidays, playground games, school life, TV shows, weather, and places.
+          - For older children (11–16): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
+          - For adults: Make the questions hard (Take a look at the trivia questions in the Trivial Pursuit box).
+        - Ensure the vocabulary and concepts are understandable for the specified age group.
+        - Never repeat a question.
+        - Return your response only in this JSON format:
+        {
+          "question": "Wat is de hoofdstad van Frankrijk?",
+          "answer": "Parijs"
+        }`
+      };
 };    
 
 window.updateUILanguage = function() {
@@ -74,6 +74,13 @@ window.updateLanguage = function() {
     language = select.value;
     console.log("Language changed to:", language);
     updateUILanguage();
+};
+
+//set country
+window.updateCountry = function() {
+    const select = document.getElementById("countrySelect");
+    country = select.value;
+    console.log("Country changed to:", country);
 };
 
 // Player management functions
