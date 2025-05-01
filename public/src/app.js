@@ -195,7 +195,7 @@ window.getQuestion = async function(color, name, age) {
         const response = await client.chat.completions.create({
             model: "gpt-4-turbo",
             messages: messages,
-            temperature: 1.3,
+            temperature: 0.65,
         });
         
         const responseContent = response.choices[0].message.content;
