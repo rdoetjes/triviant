@@ -182,7 +182,7 @@ function pruneMessages(){
      // remove the last user message, we don't need player moves to be part of the costly prompts
      messages.pop();
 
-    if (messages.length > 20) {
+    if (messages.length > 40) {
         messages = [messages[0], ...messages.slice(-10)];
     }
 }
