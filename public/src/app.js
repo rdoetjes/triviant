@@ -176,6 +176,24 @@ window.showAnswer = function() {
     questionDisplay.textContent = answerDisplay;
 };
 
+function pruneMessages(){
+     // remove the last user message, we don't need player moves to be part of the costly prompts
+     messages.pop();
+
+    if (messages.length > 20) {
+        messages = [messages[0], ...messages.slice(-10)];
+    }
+}
+
+function stripJson(jsonResponse){
+    try {
+        const trimmed = JSON.stringify({question: jsonResponse.question});
+        messages.push({ role: "assistant", content: trimmed });
+    } catch (e) {
+        console.error("Parse error");
+    }
+}
+
 window.getQuestion = async function(color, name, age) {
     if (!client) {
         alert(translations[language]["Please enter your OpenAI API key first!"]);
@@ -199,31 +217,26 @@ window.getQuestion = async function(color, name, age) {
         );
         
         const response = await client.chat.completions.create({
-            model: "gpt-4-turbo",
+            model: "gpt-3.5-turbo",
             messages: messages,
             temperature: 0.65,
         });
-        
-        // remove the last user message, we don't need player moves to be part of the costly prompts
-        messages.pop();
 
         const responseContent = response.choices[0].message.content;
         console.log("API Response:", responseContent);
         
-        try {
-            const jsonResponse = JSON.parse(responseContent);
-            questionDisplay.textContent = jsonResponse.question;
-            messages.push(
-                {
-                    role: "assistant",
-                    content: responseContent
-                }
-            );
-            answerDisplay = jsonResponse.answer;
-        } catch (parseError) {
-            console.error("Error parsing JSON response:", parseError);
-            questionDisplay.textContent = "Error: Could not parse question. Please try again.";
-        }
+        pruneMessages();
+        
+        // remove the json markup from the assistent prompt to save token
+        const jsonResponse = JSON.parse(responseContent);
+        stripJson(jsonResponse);
+
+        // Update the question display
+        answerDisplay = jsonResponse.answer;
+
+        // Show the question
+        questionDisplay.textContent = jsonResponse.question;
+
     } catch (error) {
         console.error("Error getting question:", error);
         document.getElementById("questionDisplay").textContent = 
