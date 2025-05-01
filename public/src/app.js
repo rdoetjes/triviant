@@ -193,7 +193,7 @@ window.getQuestion = async function(color, name, age) {
         );
         
         const response = await client.chat.completions.create({
-            model: "gpt-4.5-turbo",
+            model: "gpt-4-turbo",
             messages: messages,
             temperature: 0.65,
         });
