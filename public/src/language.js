@@ -31,6 +31,7 @@ export const translations = {
         "Age": "Age",
         "Player name": "Player name",
         "Select Category": "Color",
+        "Country:": "Country:",
     },
     Dutch: {   
         "Player 1": "Speler 1",
@@ -64,6 +65,7 @@ export const translations = {
         "Age": "Leeftijd",
         "Player name": "Naam speler",
         "Select Category": "Kleur",
+        "Country:": "Land:",
     },
     German: {
         "Player 1": "Spieler 1",
@@ -97,6 +99,7 @@ export const translations = {
         "Age": "Alter",
         "Player name": "Spielername",
         "Select Category": "Farbe",
+        "Country:": "Land:",
     },
     Spanish: {
         "Player 1": "Jugador 1",
@@ -130,6 +133,7 @@ export const translations = {
         "Age": "Edad",
         "Player name": "Nombre de jugador",
         "Select Category": "Color",
+        "Country:": "País:",
     },
     French: {
         "Player 1": "Joueur 1",
@@ -163,6 +167,7 @@ export const translations = {
         "Age": "Âge",
         "Player name": "Nom du joueur",
         "Select Category": "Couleur",
+        "Country:": "Pays:",
     }
 };
     
