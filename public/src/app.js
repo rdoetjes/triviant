@@ -24,6 +24,8 @@ window.createSystemPrompt = function () {
           - For adults: Make the questions hard (Take a look at the trivia questions in the Trivial Pursuit box).
         - Ensure the vocabulary and concepts are understandable for the specified age group.
         - Never repeat a question.
+          - A question counts as repeated if it is asking for the same factual answer as a previous question, even if worded differently.
+          - You MUST avoid semantically similar questions, not just exact duplicates.
         - Return your response only in this JSON format:
         {
           "question": "Wat is de hoofdstad van Frankrijk?",
