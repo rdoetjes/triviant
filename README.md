@@ -30,3 +30,7 @@ http-server -d public
 ```
 And you serve to that url in your browser. You can host this for free on Azure or AWS, or any other cloud provider as it is a tiny static web page.
 
+**Costs**
+
+The cost for the OpenAI API is relatively high. If you know something about LLMs, then you know they don't have an "active" state. There for in order to refrain from getting the same question over and over again in the same session, we need to feed back the questions that have been served in so called "assistant prompts". So slowly over the game the cost will go up. I estimate the cost to be around 1.5 cent per question. This is also because we are using the most expensive model, the 4 turbo model -- which is required in order to be aware about the different countries and languages. OpenAI gpt-4-turbo does a great job in finding age  and location appropriate questions. When prices will eventually come down, we will probably pay about 10cents for a whole game.
+
