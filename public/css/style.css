@@ -258,15 +258,16 @@
         }
 
         #startGameBtn {
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-            margin-top: 20px;
-            padding: 15px 30px;
+            background: linear-gradient(135deg,  #4169E1 0%, #1E90FF 100%);
+            padding: 15px;
             font-size: 18px;
         }
 
         #addPlayerBtn {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
+            padding: 15px;
+            font-size: 18px;
         }
 
         /* Responsive Design */
