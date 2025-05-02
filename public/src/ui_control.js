@@ -15,9 +15,8 @@ window.createSystemPrompt = function () {
           - For older children (11–16): Ask more factual and reasoning-based questions (e.g., historical events, global locations, science facts).
           - For adults: Make the questions hard (Take a look at the trivia questions in the Trivial Pursuit box).
         - Ensure the vocabulary and concepts are understandable for the specified age group.
-        - Avoid questions that are about the same TV characters, such as Peppa Pig, Nijntje, or Disney princesses.
-            - Do not ask more than one question about the same show, character, or story.
-            - Each new question must introduce a completely new theme or subject.
+        - Avoid questions that are about the same TV characters, such as Sesame street, Peppa Pig, Nijntje/Miffie, or Disney princesses.
+            - Avoid questions about their colours, it's in appropriate.
         - Return your response only in this JSON format:
         {
           "question": "Wat is de hoofdstad van Frankrijk?",
