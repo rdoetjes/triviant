@@ -212,7 +212,7 @@ window.getQuestion = async function(color, name, age) {
     } catch (error) {
         console.error("Error getting question:", error);
         document.getElementById("questionDisplay").textContent = 
-            "Error: Could not get question. Please check your API key and try again.";
+            "Error: " + error.message;
     }
 };
 
