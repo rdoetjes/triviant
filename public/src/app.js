@@ -104,6 +104,12 @@ window.addPlayerInput = function() {
 };
 
 window.startGame = function() {
+    //check client
+    if (!client) {
+        alert(translations[language]["Please enter your OpenAI API key first!"]);
+        return;
+    }
+    
     // Collect player information
     const playerConfigs = document.querySelectorAll('.player-config');
     players = [];
@@ -196,11 +202,6 @@ function stripJson(jsonResponse){
 }
 
 window.getQuestion = async function(color, name, age) {
-    if (!client) {
-        alert(translations[language]["Please enter your OpenAI API key first!"]);
-        return;
-    }
-    
     try {
         const questionDisplay = document.getElementById("questionDisplay");
         
