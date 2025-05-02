@@ -202,10 +202,10 @@ window.getQuestion = async function(color, name, age) {
         // so that same question won't come back the first 40 moves at least
         state.addQuestionToPrompt(jsonResponse.question);
 
-        // Update the question display
+        // Update the answer that will be put on screen into the state
         state.setAnswerDisplay(jsonResponse.answer);
 
-        // Show the question
+        // Show the question on screen and put it into the state
         state.setQueryDisplay(jsonResponse.question);
         questionDisplay.textContent = state.getQueryDisplay();
 
