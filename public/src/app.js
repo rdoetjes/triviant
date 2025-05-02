@@ -92,7 +92,6 @@ window.addPlayerInput = function() {
     }
     
     const playerInputs = document.getElementById("playerInputs");
-    const playerCount = playerInputs.children.length + 1;
     
     const playerDiv = document.createElement("div");
     playerDiv.className = "player-config";
