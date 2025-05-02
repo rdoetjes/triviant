@@ -1,6 +1,7 @@
 // Trivial Pursuit Game
 import OpenAI from "https://cdn.skypack.dev/openai";
 import {translations} from "./language.js";
+import * as helper from "./helper.js";  
 
 let client;
 let players = [];
@@ -183,24 +184,6 @@ window.showAnswer = function() {
     questionDisplay.textContent = answerDisplay;
 };
 
-function pruneMessages(){
-     // remove the last user message, we don't need player moves to be part of the costly prompts
-     messages.pop();
-
-    if (messages.length > 40) {
-        messages = [messages[0], ...messages.slice(-10)];
-    }
-}
-
-function stripJson(jsonResponse){
-    try {
-        const trimmed = JSON.stringify({question: jsonResponse.question});
-        messages.push({ role: "assistant", content: trimmed });
-    } catch (e) {
-        console.error("Parse error");
-    }
-}
-
 window.getQuestion = async function(color, name, age) {
     try {
         const questionDisplay = document.getElementById("questionDisplay");
@@ -228,11 +211,11 @@ window.getQuestion = async function(color, name, age) {
         const responseContent = response.choices[0].message.content;
         console.log("API Response:", responseContent);
         
-        pruneMessages();
+        helper.pruneMessages(messages);
         
         // remove the json markup from the assistent prompt to save token
         const jsonResponse = JSON.parse(responseContent);
-        stripJson(jsonResponse);
+        helper.stripJson(jsonResponse, messages);
 
         // Update the question display
         answerDisplay = jsonResponse.answer;
