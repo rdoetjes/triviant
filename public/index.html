@@ -383,7 +383,13 @@
     </div>
     </div>
 
-    <script src="https://cdn.skypack.dev/openai" type="module"></script>
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+      </script>
     <script src="./src/ui_control.js" type="module"></script>
 </body>
 
