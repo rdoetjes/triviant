@@ -223,103 +223,207 @@ window.showAnswer = function () {
     // document.getElementById("showAnswerBtn").style.display = 'none';
 };
 
-window.getQuestion = async function (color, name, age) {
-    const genAI = state.getGenAI(); // Get the initialized GoogleGenerativeAI instance
-    if (!genAI) {
-         console.error("Google AI Client not initialized.");
-         document.getElementById("questionDisplay").textContent = translations[state.getLanguage()]["API Key Invalid or Missing"];
-         return;
+// Assuming 'state', 'translations', 'createSystemPrompt' are accessible in this scope
+
+// --- Helper Functions ---
+
+/**
+ * Checks preconditions and sets the initial loading state for the UI.
+ * @returns {boolean} True if okay to proceed, false otherwise.
+ */
+function initializeRequestState() {
+    if (state.getQueryRunning()) {
+        console.log("Query already running. Aborting.");
+        return false; // Don't proceed
     }
 
+    const genAI = state.getGenAI();
+    if (!genAI) {
+        console.error("Google AI Client not initialized.");
+        document.getElementById("questionDisplay").textContent = translations[state.getLanguage()]["API Key Invalid or Missing"];
+        return false; // Don't proceed
+    }
+
+    // Set query running state
+    state.setQueryRunning(true);
+
+    // Show loading UI state
+    const questionDisplay = document.getElementById("questionDisplay");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+    questionDisplay.textContent = translations[state.getLanguage()]["Loading question..."];
+    showAnswerBtn.style.display = 'none';
+    showAnswerBtn.textContent = translations[state.getLanguage()]["Show Answer"]; // Reset button text
+
+    return true; // Okay to proceed
+}
+
+/**
+ * Prepares the data needed for the API request (user message, history, system prompt).
+ * @param {string} color
+ * @param {string} name
+ * @param {number} age
+ * @returns {string} The system instruction content.
+ */
+function prepareApiPayload(color, name, age) {
+    // 1. Prepare the user message for this request
+    const userMessageContent = `${name} a question for a ${age} year old ${color}`;
+    const userMessageForAPI = { role: "user", text: userMessageContent };
+
+    // 2. Add the user message to the state *before* the API call
+    state.addMessage(userMessageForAPI);
+
+    // 3. Get the system instruction string
+    return createSystemPrompt();
+}
+
+/**
+ * Configures and retrieves the Generative Model instance.
+ * @param {string} systemInstructionContent - The system prompt string.
+ * @returns {GenerativeModel} The configured Google AI model instance.
+ */
+function getConfiguredModel(systemInstructionContent) {
+    const genAI = state.getGenAI(); // Assume already checked in initializeRequestState
+
+    const generationConfig = {
+        temperature: 0.7,
+        maxOutputTokens: 1000,
+        responseMimeType: 'application/json',
+    };
+
+    return genAI.getGenerativeModel({
+        model: "gemini-2.5-pro-preview-03-25", // Use the desired Gemini model
+        systemInstruction: systemInstructionContent,
+        generationConfig: generationConfig
+    });
+}
+
+/**
+ * Executes the API call to Google Gemini.
+ * @param {GenerativeModel} model - The configured model instance.
+ * @returns {Promise<string>} A promise that resolves with the raw response text.
+ */
+async function executeApiCall(model) {
+    console.log("Calling Gemini API...");
+    // Pass the history (which includes the latest user prompt)
+    const result = await model.generateContent({ contents: state.getMessages() });
+    const response = await result.response;
+
+    // This removes the user prompt we added just for this request.
+    state.pruneMessages();
+
+    const responseContentText = response.text();
+    return responseContentText; // Should be the JSON string
+}
+
+/**
+ * Parses the API response, updates state, and adds the AI response to history.
+ * @param {string} responseText - The raw text response from the API (expected JSON).
+ * @returns {object | null} The parsed JSON object, or null if parsing fails.
+ */
+function processApiResponse(responseText) {
+    let jsonResponse;
+    console.log("Attempting to parse JSON response...", responseText);
+    try {
+        jsonResponse = JSON.parse(responseText);
+    } catch (parseError) {
+        console.error("Failed to parse JSON response:", parseError);
+        console.error("Received text was:", responseText);
+        document.getElementById("questionDisplay").textContent = `${translations[state.getLanguage()]["Error"]}: ${translations[state.getLanguage()]["Invalid response format."]}`;
+        return null; // Indicate failure
+    }
+
+    // Add the AI's actual response (the question part) to history
+    if (jsonResponse.question) {
+        state.addQuestionToPrompt(jsonResponse.question); // Assumes this uses {role: 'model', text: ...}
+    } else {
+        console.warn("JSON response missing 'question' field:", jsonResponse);
+    }
+
+    // Update state with parsed data
+    state.setAnswerDisplay(jsonResponse.answer || translations[state.getLanguage()]["No answer provided"]);
+    state.setQueryDisplay(jsonResponse.question || translations[state.getLanguage()]["No question provided"]);
+
+    return jsonResponse; // Return parsed data for potential further use
+}
+
+/**
+ * Updates the UI elements after a successful API response processing.
+ */
+function updateUiOnSuccess() {
     const questionDisplay = document.getElementById("questionDisplay");
     const showAnswerBtn = document.getElementById("showAnswerBtn");
 
+    questionDisplay.textContent = state.getQueryDisplay();
+    showAnswerBtn.style.display = 'inline-block';
+}
+
+/**
+ * Handles errors during the API call or processing, updating the UI.
+ * @param {Error} error - The error object caught.
+ */
+function handleApiError(error) {
+    console.error("Error during getQuestion flow:", error);
+    const questionDisplay = document.getElementById("questionDisplay");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+
+    let errorMessage = translations[state.getLanguage()]["Error fetching question"]; // Default
+    const errorString = error.toString().toLowerCase(); // Case-insensitive check
+
+    if (errorString.includes("api key not valid") || errorString.includes("api_key_invalid")) {
+        errorMessage = translations[state.getLanguage()]["API Key Invalid or Missing"];
+    } else if (errorString.includes("quota") || errorString.includes("resource_exhausted")) {
+        errorMessage = translations[state.getLanguage()]["API Quota Exceeded"];
+    } else if (error.message) { // Use error message if available and not generic
+       // You might want more specific checks here based on Gemini errors
+       errorMessage = error.message; // Be careful displaying raw errors directly to users
+    }
+
+    // Combine the translated prefix with the specific message
+    questionDisplay.textContent = `${translations[state.getLanguage()]["Error"]}: ${errorMessage}`;
+    showAnswerBtn.style.display = 'none'; // Hide button on error
+}
+
+/**
+ * Resets the query running state, typically called in 'finally'.
+ */
+function finalizeRequestState() {
+    state.setQueryRunning(false);
+    console.log("Query running state reset.");
+}
+
+
+// --- Main Orchestrating Function ---
+
+window.getQuestion = async function (color, name, age) {
+    // 1. Initial Checks & UI Setup
+    if (!initializeRequestState()) {
+        return; // Stop if checks fail or already running
+    }
+
     try {
-        // Show loading state
-        questionDisplay.textContent = translations[state.getLanguage()]["Loading question..."];
-        showAnswerBtn.style.display = 'none'; // Hide answer button while loading
-        showAnswerBtn.textContent = translations[state.getLanguage()]["Show Answer"]; // Reset button text
+        // 2. Prepare Data
+        const systemInstructionContent = prepareApiPayload(color, name, age);
 
-        // 1. Prepare the user message for this request
-        const userMessageContent = `${name} a question for a ${age} year old ${color}`;
-        const userMessageForAPI = { role: "user", text: userMessageContent };
+        // 3. Configure Model
+        const model = getConfiguredModel(systemInstructionContent);
 
-        // 2. Add the user message to the state *before* the API call
-        state.addMessage(userMessageForAPI);
+        // 4. Execute API Call (includes pruning user message after)
+        const responseText = await executeApiCall(model);
 
-         // 3. Get the system instruction string
-         const systemInstructionContent = createSystemPrompt();
+        // 5. Process Response & Update State (includes adding AI message to history)
+        const jsonResponse = processApiResponse(responseText);
 
-        // 4. Define Generation Configuration
-        const generationConfig = {
-            temperature: 0.7, // Adjusted slightly, Gemini might behave differently
-            maxOutputTokens: 1000, // Generous limit for Q&A JSON
-            // Crucially, enforce JSON output
-            responseMimeType: 'application/json',
-        };
-
-        // 5. Get the model instance with system instructions and config
-         const model = genAI.getGenerativeModel({
-             model: "gemini-2.5-pro-preview-03-25", // Use the desired Gemini model
-             systemInstruction: systemInstructionContent,
-             generationConfig: generationConfig
-         });
-
-        // 6. Make the API call using generateContent
-        // Pass the history (which includes the latest user prompt)
-        console.log("Calling Gemini API...");
-        const result = await model.generateContent({ contents: state.getMessages() });
-        console.log("Gemini API Response:", result);
-        const response = await result.response;
-
-        console.log("Gemini API Response raw:", response);
-        const responseContentText = response.text(); // This should be the JSON string
-        console.log("API Response Content (expecting JSON string):", responseContentText);
-
-        // 7. Prune messages *after* the call, removing the user prompt we added
-        state.pruneMessages(); // Should remove the last user message
-
-        // 8. Parse the JSON response
-        // Gemini with responseMimeType should return just the JSON string
-        let jsonResponse;
-        console.log("Attempting to parse JSON response... "+responseContentText);
-        try {
-             jsonResponse = JSON.parse(responseContentText);
-        } catch(parseError) {
-            console.error("Failed to parse JSON response:", parseError);
-            console.error("Received text was:", responseContentText);
-            questionDisplay.textContent = `${translations[state.getLanguage()]["Error"]}: ${translations[state.getLanguage()]["Invalid response format."]}`;
-            return; // Stop processing if parsing failed
+        // 6. Update UI on Success (only if processing didn't fail)
+        if (jsonResponse) {
+             updateUiOnSuccess();
         }
-
-        // 9. Add the AI's *actual* response (the question part) to history to avoid repeats
-        // We add the question text, not the full JSON, to simulate conversation flow
-        if (jsonResponse.question) {
-             // state.addQuestionToPrompt now uses {role: 'model', text: ...}
-             state.addQuestionToPrompt(jsonResponse.question);
-        } else {
-             console.warn("JSON response missing 'question' field:", jsonResponse);
-        }
-
-        // 10. Update state and UI
-        state.setAnswerDisplay(jsonResponse.answer || translations[state.getLanguage()]["No answer provided"]); // Handle missing answer
-        state.setQueryDisplay(jsonResponse.question || translations[state.getLanguage()]["No question provided"]); // Handle missing question
-        questionDisplay.textContent = state.getQueryDisplay();
-        showAnswerBtn.style.display = 'inline-block'; // Show the answer button
 
     } catch (error) {
-        console.error("Error getting question from Gemini:", error);
-         // Check for specific API errors if possible
-         let errorMessage = error.message;
-         if (error.toString().includes("API key not valid")) {
-            errorMessage = translations[state.getLanguage()]["API Key Invalid or Missing"];
-         } else if (error.toString().includes("quota")) {
-             errorMessage = translations[state.getLanguage()]["API Quota Exceeded"];
-         } else {
-             errorMessage = translations[state.getLanguage()]["Error fetching question"];
-         }
-        questionDisplay.textContent = `${translations[state.getLanguage()]["Error"]}: ${errorMessage} + " "+${error.toString()}`;
-        showAnswerBtn.style.display = 'none'; // Hide button on error
+        // 7. Handle Errors
+        handleApiError(error);
+    } finally {
+        // 8. Always Reset State
+        finalizeRequestState();
     }
 };
 

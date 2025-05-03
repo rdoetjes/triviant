@@ -13,6 +13,7 @@ class State {
     messages = [];
     answerDisplay = "";
     queryDisplay = "";
+    queryRunning = false;
 
     constructor() {
         this.language = "Dutch"; // Default language
@@ -157,6 +158,14 @@ class State {
     addQuestionToPrompt(questionToAvoidDuplicates) {
         // Use 'model' role for Gemini
         this.addMessage({ role: "model", text: "Avoid this question: "+questionToAvoidDuplicates });
+    }
+
+    setQueryRunning(queryRunning) {
+        this.queryRunning = queryRunning;
+    }
+
+    getQueryRunning() {
+        return this.queryRunning;
     }
 }
 
