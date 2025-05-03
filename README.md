@@ -3,11 +3,11 @@
 
 This web application runs entirely on the front end, so it only requires a static web page server. It generates trivia questions based on the player's **age** and **country of origin**.
 
-The questions are generated using the OpenAI API. All you need is an OpenAI API key, which you'll enter in the setup form.
+The questions are generated using the Gemini (Google AI). All you need is an Gemini API key, which you'll enter in the setup form.
 
 ![Setup Form](images/pic1.png "Setup Form")
 
-Players select their age and country, and the questions are tailored accordingly using the OpenAI API. The questions are both **age-appropriate** and **regionally relevant**.
+Players select their age and country, and the questions are tailored accordingly using the Gemini API. The questions are both **age-appropriate** and **regionally relevant**.
 
 ---
 
@@ -60,11 +60,8 @@ Then, open the provided URL in your browser. You can host this for free on Azure
 
 ## **Costs**
 
-The OpenAI API is relatively expensive. If you're familiar with LLMs, you know they don't maintain an "active" memory state. To avoid repeating questions during a session, we feed previous questions back into the prompt using "assistant messages."
-
-As the game progresses, the prompt grows, increasing API costs. I estimate the cost at around **$0.015 per question**. This is because we use the **GPT-4 Turbo** model, which is necessary to generate high-quality, age- and country-appropriate questions.
-
-As OpenAI prices drop, we anticipate being able to generate an entire game’s worth of questions for around **$0.10**.
+We are waiting for the Gemini API it's cost esstimate to be released.
+But even the free tier of Gemini will allow you to play a game with 2 people, without running into the daily limits.
 
 ---
 
