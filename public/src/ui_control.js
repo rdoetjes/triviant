@@ -18,9 +18,7 @@ window.createSystemPrompt = function () {
 - Ensure the vocabulary and concepts are understandable for the specified age group.
 - Avoid questions that are about the same TV characters, such as Sesame street, Peppa Pig, Nijntje/Miffie, or Disney princesses.
 - Avoid questions about their colours, it's inappropriate.
-- Do not repeat questions that have already been asked in this session.
-- Ensure question diversity. Avoid asking questions about the same specific fact or topic multiple times.
-- Keep track of asked questions and generate novel ones.
+- Do not repeat questions!!!
 - Return your response *only* in this JSON format, with no other text before or after the JSON structure:
 {
   "question": "Wat is de hoofdstad van Frankrijk?",
@@ -249,14 +247,10 @@ window.getQuestion = async function (color, name, age) {
         // 2. Add the user message to the state *before* the API call
         state.addMessage(userMessageForAPI);
 
-        // 3. Get current conversation history from state (already in Gemini format)
-        const history = state.getMessages();
-        console.log("Sending history:", history); // Log history being sent
-
-         // 4. Get the system instruction string
+         // 3. Get the system instruction string
          const systemInstructionContent = createSystemPrompt();
 
-        // 5. Define Generation Configuration
+        // 4. Define Generation Configuration
         const generationConfig = {
             temperature: 0.7, // Adjusted slightly, Gemini might behave differently
             maxOutputTokens: 1000, // Generous limit for Q&A JSON
@@ -264,17 +258,17 @@ window.getQuestion = async function (color, name, age) {
             responseMimeType: 'application/json',
         };
 
-        // 6. Get the model instance with system instructions and config
+        // 5. Get the model instance with system instructions and config
          const model = genAI.getGenerativeModel({
              model: "gemini-2.5-pro-exp-03-25", // Use the desired Gemini model
              systemInstruction: systemInstructionContent,
              generationConfig: generationConfig
          });
 
-        // 7. Make the API call using generateContent
+        // 6. Make the API call using generateContent
         // Pass the history (which includes the latest user prompt)
         console.log("Calling Gemini API...");
-        const result = await model.generateContent({ contents: history });
+        const result = await model.generateContent({ contents: state.getMessages() });
         console.log("Gemini API Response:", result);
         const response = await result.response;
 
@@ -282,10 +276,10 @@ window.getQuestion = async function (color, name, age) {
         const responseContentText = response.text(); // This should be the JSON string
         console.log("API Response Content (expecting JSON string):", responseContentText);
 
-        // 8. Prune messages *after* the call, removing the user prompt we added
+        // 7. Prune messages *after* the call, removing the user prompt we added
         state.pruneMessages(); // Should remove the last user message
 
-        // 9. Parse the JSON response
+        // 8. Parse the JSON response
         // Gemini with responseMimeType should return just the JSON string
         let jsonResponse;
         console.log("Attempting to parse JSON response... "+responseContentText);
@@ -298,8 +292,7 @@ window.getQuestion = async function (color, name, age) {
             return; // Stop processing if parsing failed
         }
 
-
-        // 10. Add the AI's *actual* response (the question part) to history to avoid repeats
+        // 9. Add the AI's *actual* response (the question part) to history to avoid repeats
         // We add the question text, not the full JSON, to simulate conversation flow
         if (jsonResponse.question) {
              // state.addQuestionToPrompt now uses {role: 'model', text: ...}
@@ -308,8 +301,7 @@ window.getQuestion = async function (color, name, age) {
              console.warn("JSON response missing 'question' field:", jsonResponse);
         }
 
-
-        // 11. Update state and UI
+        // 10. Update state and UI
         state.setAnswerDisplay(jsonResponse.answer || translations[state.getLanguage()]["No answer provided"]); // Handle missing answer
         state.setQueryDisplay(jsonResponse.question || translations[state.getLanguage()]["No question provided"]); // Handle missing question
         questionDisplay.textContent = state.getQueryDisplay();

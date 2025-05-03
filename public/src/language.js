@@ -35,6 +35,11 @@ export const translations = {
         "Please enter your OpenAI API key first!": "Please enter your OpenAI API key first!",
         "Please add at least one player.": "Please add at least one player.",
         "Maximum 6 players allowed!": "Maximum 6 players allowed!",
+        "API Key Invalid or Missing": "API Key Invalid or Missing",
+        "API Quota Exceeded": "API Quota Exceeded",
+        "Error fetching question": "Error fetching question",
+        "Error": "Error",
+
     },
     Dutch: {   
         "Player 1": "Speler 1",
@@ -72,6 +77,10 @@ export const translations = {
         "Please enter your OpenAI API key first!": "Voer eerst uw OpenAI API-sleutel in!",
         "Please add at least one player.": "Voeg tenminste één speler toe!",
         "Maximum 6 players allowed!": "Maximaal 6 spelers toegestaan!",
+        "API Key Invalid or Missing": "API-sleutel ongeldig",
+        "API Quota Exceeded": "API-Quota Overschreden",
+        "Error fetching question": "Fout bij het ophalen van de vraag",
+        "Error": "Fout",
     },
     German: {
         "Player 1": "Spieler 1",
@@ -109,6 +118,10 @@ export const translations = {
         "Please enter your OpenAI API key first!": "Bitte geben Sie zuerst Ihren OpenAI API-Schlüssel ein!",
         "Please add at least one player!": "Bitte fügen Sie mindestens einen Spieler hinzu!",
         "Maximum 6 players allowed!": "Maximal 6 Spieler sind erlaubt!",
+        "API Key Invalid or Missing": "API-Schlüssel ungültig oder fehlt",
+        "API Quota Exceeded": "API-Kontingent überschritten",
+        "Error fetching question": "Fehler beim Abrufen der Frage",
+        "Error": "Fehler",
     },
     Spanish: {
         "Player 1": "Jugador 1",
@@ -146,6 +159,10 @@ export const translations = {
         "Please enter your OpenAI API key first!": "¡Por favor, ingrese su clave de API de OpenAI primero!",
         "Please add at least one player.": "¡Por favor, agregue al menos un jugador!",
         "Maximum 6 players allowed!": "¡Máximo 6 jugadores permitidos!",
+        "API Key Invalid or Missing": "Clave de API no válida o faltante",
+        "API Quota Exceeded": "Cuota de API excedida",
+        "Error fetching question": "Error al obtener la pregunta",
+        "Error": "Error",
     },
     French: {
         "Player 1": "Joueur 1",
@@ -183,6 +200,10 @@ export const translations = {
         "Please enter your OpenAI API key first!": "Veuillez entrer votre clé API OpenAI d'abord !",
         "Please add at least one player.": "Veuillez ajouter au moins un joueur !",
         "Maximum 6 players allowed!": "Maximum 6 joueurs autorisés !",
+        "API Key Invalid or Missing": "Clé API non valide ou manquante",
+        "API Quota Exceeded": "Quota API dépassé",
+        "Error fetching question": "Erreur lors de la récupération de la question",
+        "Error": "Erreur",
     }
 };
     
