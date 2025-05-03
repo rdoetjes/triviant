@@ -156,7 +156,7 @@ class State {
     // Add the AI's response (question) to history to avoid duplicates
     addQuestionToPrompt(questionToAvoidDuplicates) {
         // Use 'model' role for Gemini
-        this.addMessage({ role: "model", text: "Avoid this qyestion: "+questionToAvoidDuplicates });
+        this.addMessage({ role: "model", text: "Avoid this question: "+questionToAvoidDuplicates });
     }
 }
 

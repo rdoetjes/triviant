@@ -260,7 +260,7 @@ window.getQuestion = async function (color, name, age) {
 
         // 5. Get the model instance with system instructions and config
          const model = genAI.getGenerativeModel({
-             model: "gemini-2.5-pro-exp-03-25", // Use the desired Gemini model
+             model: "gemini-2.5-pro-preview-03-25", // Use the desired Gemini model
              systemInstruction: systemInstructionContent,
              generationConfig: generationConfig
          });
