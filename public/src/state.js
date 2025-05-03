@@ -116,7 +116,7 @@ class State {
     }
 
     addQuestionToPrompt(questionToAvoidDuplicates) {
-        this.messages.push({ role: "assistant", content: questionToAvoidDuplicates });
+        this.messages.push({ role: "assistant", content: "Avoid this question: "+questionToAvoidDuplicates });
     }
 
     getCurrentPlayer() {
