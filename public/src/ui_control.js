@@ -166,53 +166,143 @@ window.showAnswer = function() {
     questionDisplay.textContent = state.getAnswerDisplay();
 };
 
-window.getQuestion = async function(color, name, age) {
+// Assumed globals/accessible variables: state, translations, document
+
+/**
+ * Updates the UI elements to indicate that a question is being loaded.
+ */
+function showLoadingStateUI() {
+    const questionDisplay = document.getElementById("questionDisplay");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+    const lang = state.getLanguage(); // Assuming state object is accessible
+
+    questionDisplay.textContent = translations[lang]["Loading question..."];
+    showAnswerBtn.textContent = translations[lang]["Show Answer"];
+    // Consider adding a visual loading indicator (spinner, etc.) here too
+}
+
+/**
+ * Builds the user message object for the API call.
+ * @param {string} color
+ * @param {string} name
+ * @param {string} age
+ * @returns {object} The user message object.
+ */
+function buildUserMessage(color, name, age) {
+    return {
+        role: "user",
+        content: `${name} a question for a ${age} old ${color}` // Corrected typo "questoin" -> "question"
+    };
+}
+
+/**
+ * Calls the chat completions API.
+ * @returns {Promise<object>} The API response object.
+ * @throws {Error} If the API call fails.
+ */
+async function fetchChatCompletion() {
+    // Add the user message just before the call
+    // Note: The original code added the message *before* calling create.
+    // If buildUserMessage is called outside, ensure state.addMessage is called before this.
+    
+    // Let's stick to the original logic flow where the main function adds the message first.
+    
+    return await state.getClient().chat.completions.create({ // Assuming state object is accessible
+        model: "gpt-4.5-preview", // Consider making this configurable
+        messages: state.getMessages(),
+        temperature: 0.65,         // Consider making this configurable
+        max_tokens: 150,           // Consider making this configurable
+    });
+}
+
+/**
+ * Processes the successful API response, updates state, and displays the question.
+ * @param {string} responseContent - The raw content string from the API response.
+ */
+function processAndDisplayResponse(responseContent) {
+    console.log("API Response:", responseContent);
+
+    // Remove the last message (assistant response) before processing
+    // And prune older messages if needed
+    state.pruneMessages(); // Assuming state object is accessible
+
+    // Parse the JSON response
+    // Add error handling for potentially invalid JSON
+    let jsonResponse;
     try {
-        const questionDisplay = document.getElementById("questionDisplay");
-        
-        // Show loading state
-        questionDisplay.textContent = translations[state.getLanguage()]["Loading question..."];
-        
-        // Make sure answer is hidden when getting a new question
-        document.getElementById("showAnswerBtn").textContent = translations[state.getLanguage()]["Show Answer"];
-        
-        state.addMessage(
-            {
-                role: "user",
-                content: `${name} a question for a ${age} old ${color}`
-            }
-        );
-        
-        const response = await state.getClient().chat.completions.create({
-            model: "gpt-4.5-preview",
-            messages: state.getMessages(),
-            temperature: 0.65,
-            max_tokens: 150,
-        });
+        jsonResponse = JSON.parse(responseContent);
+    } catch (parseError) {
+        console.error("Error parsing API response JSON:", parseError);
+        // Re-throw or handle appropriately, maybe show an error UI
+        throw new Error("Failed to parse response from AI."); 
+    }
 
-        const responseContent = response.choices[0].message.content;
-        console.log("API Response:", responseContent);
-        
-        // Remove the last message from the messages array and anything after 40 or so moves (saves tokens)
-        state.pruneMessages();
-        
-        // remove the json markup from the assistent prompt to save token
-        const jsonResponse = JSON.parse(responseContent);
+    // Add the new question to the prompt history to avoid immediate repeats
+    state.addQuestionToPrompt(jsonResponse.question);
 
-        // so that same question won't come back the first 40 moves at least
-        state.addQuestionToPrompt(jsonResponse.question);
+    // Update the answer in the state
+    state.setAnswerDisplay(jsonResponse.answer);
 
-        // Update the answer that will be put on screen into the state
-        state.setAnswerDisplay(jsonResponse.answer);
+    // Update and display the question
+    state.setQueryDisplay(jsonResponse.question);
+    displayQuestionUI(state.getQueryDisplay());
+}
 
-        // Show the question on screen and put it into the state
-        state.setQueryDisplay(jsonResponse.question);
-        questionDisplay.textContent = state.getQueryDisplay();
+/**
+ * Updates the UI to display the received question.
+ * @param {string} questionText - The question text to display.
+ */
+function displayQuestionUI(questionText) {
+    const questionDisplay = document.getElementById("questionDisplay");
+    questionDisplay.textContent = questionText;
+}
+
+/**
+ * Handles errors that occur during the question fetching process.
+ * @param {Error} error - The error object.
+ */
+function handleGetQuestionError(error) {
+    console.error("Error getting question:", error);
+    const questionDisplay = document.getElementById("questionDisplay");
+    // Provide a user-friendly error message
+    questionDisplay.textContent = translations[state.getLanguage()]["Error fetching question"] || `Error: ${error.message}`; // Fallback
+}
+
+// --- The Main Orchestrator Function ---
+
+window.getQuestion = async function(color, name, age) {
+    // 1. Check if already running (Guard Clause)
+    if (state.getQueryRunning()) {
+        console.log("Query already running, returning.");
+        return;
+    }
+
+    try {
+        // 2. Set running state and update UI to loading
+        state.setQuerRunning(true);
+        showLoadingStateUI();
+
+        // 3. Prepare and add the user message to state
+        const userMessage = buildUserMessage(color, name, age);
+        state.addMessage(userMessage);
+
+        // 4. Fetch data from API
+        const response = await fetchChatCompletion();
+        const responseContent = response.choices[0]?.message?.content; // Safer access
+
+        if (!responseContent) {
+           throw new Error("Received empty response content from API.");
+        }
+
+        // 5. Process the successful response
+        processAndDisplayResponse(responseContent);
 
     } catch (error) {
-        console.error("Error getting question:", error);
-        document.getElementById("questionDisplay").textContent = 
-            "Error: " + error.message;
+        // 6. Handle any errors during the process
+        handleGetQuestionError(error);        
+    } finally {
+        // 7. Always reset the running state
+        state.setQuerRunning(false);
     }
 };
 

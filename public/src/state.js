@@ -9,6 +9,7 @@ class State {
     messages = [];
     answerDisplay = "";
     queryDisplay = "";
+    queryRunning = false;
 
     constructor() {
         this.language = "Dutch";
@@ -121,6 +122,14 @@ class State {
 
     getCurrentPlayer() {
         return this.players[this.currentPlayerIndex];
+    }
+
+    setQuerRunning(queryRunning) {
+        this.queryRunning = queryRunning;
+    }
+
+    getQueryRunning() {
+        return this.queryRunning;
     }
 }
 
