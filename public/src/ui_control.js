@@ -318,7 +318,7 @@ window.getQuestion = async function (color, name, age) {
          } else {
              errorMessage = translations[state.getLanguage()]["Error fetching question"];
          }
-        questionDisplay.textContent = `${translations[state.getLanguage()]["Error"]}: ${errorMessage}`;
+        questionDisplay.textContent = `${translations[state.getLanguage()]["Error"]}: ${error.message}`;
         showAnswerBtn.style.display = 'none'; // Hide button on error
     }
 };
